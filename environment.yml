@@ -1,0 +1,5 @@
+name: dace_generation
+channels:
+  - defaults
+prefix: /home/sergey/anaconda3/envs/dace_generation
+
