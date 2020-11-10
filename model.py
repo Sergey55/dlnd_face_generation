@@ -29,7 +29,7 @@ class Network(pl.LightningModule):
             real loss.
         """
         batch_size = D_out.size(0)
-        labels = torch.ones(batch_size, device=self.device)
+        labels = torch.ones(batch_size, device=self._device)
 
         if smooth:
             labels = labels * 0.9
@@ -50,7 +50,7 @@ class Network(pl.LightningModule):
         """
         batch_size = D_out.size(0)
 
-        labels = torch.zeros(batch_size, device=self.device)
+        labels = torch.zeros(batch_size, device=self._device)
 
         loss = self.criterion(D_out.squeeze(), labels)
 
@@ -81,7 +81,7 @@ class Network(pl.LightningModule):
             d_real_out = self.discriminator(batch)
             d_real_loss = self.real_loss(d_real_out)
 
-            z = torch.rand(size=(batch_size, self.z_size)).uniform_(0, 1)
+            z = torch.rand(size=(batch_size, self.z_size), device=self._device).uniform_(0, 1)
             fake_images = self.generator(z)
 
             d_fake_out = self.discriminator(fake_images)
@@ -96,7 +96,7 @@ class Network(pl.LightningModule):
     def train_generator(self, batch):
             batch_size = batch.size(0)
 
-            z = torch.rand(size=(batch_size, self.z_size)).uniform_(0, 1)
+            z = torch.rand(size=(batch_size, self.z_size), device=self._device).uniform_(0, 1)
             fake_images = self.generator(z)
 
             d_fake_out = self.discriminator(fake_images)
