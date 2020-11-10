@@ -29,7 +29,7 @@ class Network(pl.LightningModule):
             real loss.
         """
         batch_size = D_out.size(0)
-        labels = torch.ones(batch_size)
+        labels = torch.ones(batch_size, device=self.device)
 
         if smooth:
             labels = labels * 0.9
@@ -50,7 +50,7 @@ class Network(pl.LightningModule):
         """
         batch_size = D_out.size(0)
 
-        labels = torch.zeros(batch_size)
+        labels = torch.zeros(batch_size, device=self.device)
 
         loss = self.criterion(D_out.squeeze(), labels)
 
