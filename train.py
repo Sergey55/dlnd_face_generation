@@ -1,4 +1,4 @@
-from model import Network
+from model import Net
 from datamodule import FaceDataModule
 
 from pytorch_lightning import Trainer
@@ -12,7 +12,7 @@ def main(args):
         num_workers=8
     )
 
-    model = Network(64, 128, 32)
+    model = Net(64, 128, 32)
 
     trainer = Trainer.from_argparse_args(args)
     trainer.fit(model, dm)
