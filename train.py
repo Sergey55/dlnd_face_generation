@@ -10,7 +10,7 @@ def main(args):
     dm = FaceDataModule(
         data_dir='processed_celeba_small',
         batch_size=128,
-        image_size=64,
+        image_size=32,
         num_workers=8
     )
 
