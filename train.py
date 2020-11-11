@@ -9,7 +9,7 @@ from weights_initializer import WeightsInitializer
 def main(args):
     dm = FaceDataModule(
         data_dir='processed_celeba_small',
-        batch_size=32,
+        batch_size=128,
         image_size=64,
         num_workers=8
     )
