@@ -2,7 +2,9 @@ from model import Net
 from datamodule import FaceDataModule
 
 from pytorch_lightning import Trainer
-from argparse import ArgumentParser 
+from argparse import ArgumentParser
+
+from weights_initializer import WeightsInitializer
 
 def main(args):
     dm = FaceDataModule(
@@ -12,7 +14,14 @@ def main(args):
         num_workers=8
     )
 
-    model = Net(64, 128, 32)
+    model = Net(g_conv_dim=64, z_size=128, d_conv_dim=32)
+
+    weights_initializer = WeightsInitializer()
+
+    # Init weights
+    model.discriminator.apply(weights_initializer.init_weights_kaiming)
+    model.generator.apply(weights_initializer.init_weights_kaiming)
+    model.generator.deconv4.apply(weights_initializer.init_weights_xavier)
 
     trainer = Trainer.from_argparse_args(args)
     trainer.fit(model, dm)
