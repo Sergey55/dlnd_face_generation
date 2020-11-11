@@ -5,11 +5,11 @@ import torch.nn as nn
 import torch.nn.functional as F
 import torch.optim as optim
 
-class Network(pl.LightningModule):
+class Net(pl.LightningModule):
     """ Network for generating people faces"""
 
     def __init__(self, g_conv_dim, z_size, d_conv_dim):
-        super(Network, self).__init__()
+        super(Net, self).__init__()
 
         self.z_size = z_size
 
@@ -17,6 +17,12 @@ class Network(pl.LightningModule):
         self.discriminator = Discriminator(d_conv_dim)
 
         self.criterion = nn.BCEWithLogitsLoss()
+
+    def forward(self, count):
+        z = torch.rand(size=(count, self.z_size), device=self._device).uniform_(0, 1)
+        fake_images = self.generator(z)
+
+        return fake_images
 
     def real_loss(self, D_out, smooth = False):
         """ Calculate how close discriminator outputs are to being real.
