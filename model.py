@@ -5,6 +5,8 @@ import torch.nn as nn
 import torch.nn.functional as F
 import torch.optim as optim
 
+from transforms import Scale
+
 class Net(pl.LightningModule):
     """ Network for generating people faces"""
 
@@ -17,6 +19,8 @@ class Net(pl.LightningModule):
         self.discriminator = Discriminator(d_conv_dim)
 
         self.criterion = nn.BCEWithLogitsLoss()
+
+        self.scale = Scale()
 
     def forward(self, count):
         z = torch.rand(size=(count, self.z_size), device=self._device).uniform_(0, 1)
@@ -83,8 +87,10 @@ class Net(pl.LightningModule):
 
     def train_discriminator(self, batch):
             batch_size = batch.size(0)
+
+            real_images = self.scale(batch)
         
-            d_real_out = self.discriminator(batch)
+            d_real_out = self.discriminator(real_images)
             d_real_loss = self.real_loss(d_real_out)
 
             z = torch.rand(size=(batch_size, self.z_size), device=self._device).uniform_(0, 1)
