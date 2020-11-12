@@ -5,7 +5,7 @@ from torchvision import datasets
 from torchvision import transforms
 
 class FaceDataModule(pl.LightningDataModule):
-    def __init__(self, data_dir, batch_size, image_size=64, num_workers=0):
+    def __init__(self, data_dir, batch_size=128, image_size=32, num_workers=0):
         """Constructor
 
         Args:
