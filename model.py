@@ -5,6 +5,8 @@ import torch.nn as nn
 import torch.nn.functional as F
 import torch.optim as optim
 
+import pickle as pkl
+
 from transforms import Scale
 
 class Net(pl.LightningModule):
@@ -21,6 +23,8 @@ class Net(pl.LightningModule):
         self.criterion = nn.BCEWithLogitsLoss()
 
         self.scale = Scale()
+
+        self.samples = []
 
     def forward(self, count):
         z = torch.rand(size=(count, self.z_size), device=self._device).uniform_(0, 1)
@@ -84,6 +88,12 @@ class Net(pl.LightningModule):
         # Train the generator:
         if optimizer_idx == 1:
             return self.train_generator(batch[0])
+
+    def training_epoch_end(self):
+        self.samples.append(self(16))
+
+        with open('train_samples.pkl', 'wb') as f:
+            pkl.dump(self.samples, f)
 
     def train_discriminator(self, batch):
             batch_size = batch.size(0)
