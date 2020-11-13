@@ -139,10 +139,8 @@ class Discriminator(nn.Module):
         #out 4 x 4 x conv_dim * 4
         self.conv4 = self.conv(conv_dim * 4, conv_dim * 8, 4)
         #out 2 x 2 x conv_dim * 8
-        self.conv5 = self.conv(conv_dim * 8, conv_dim * 16, 4)
-        #out 1 x 1 x conv_dim * 16
         
-        self.fc = nn.Linear(conv_dim * 16, 1)
+        self.fc = nn.Linear(conv_dim * 32, 1)
         
 
     def forward(self, x):
@@ -156,9 +154,8 @@ class Discriminator(nn.Module):
         x = F.leaky_relu(self.conv2(x), 0.2)
         x = F.leaky_relu(self.conv3(x), 0.2)
         x = F.leaky_relu(self.conv4(x), 0.2)
-        x = F.leaky_relu(self.conv5(x), 0.2)
         
-        x = x.view(-1, self.conv_dim * 16)
+        x = x.view(-1, self.conv_dim * 32)
         
         x = self.fc(x)
         
