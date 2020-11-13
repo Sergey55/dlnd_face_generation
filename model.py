@@ -89,7 +89,7 @@ class Net(pl.LightningModule):
         if optimizer_idx == 1:
             return self.train_generator(batch[0])
 
-    def training_epoch_end(self):
+    def training_epoch_end(self, outputs):
         self.samples.append(self(16))
 
         with open('train_samples.pkl', 'wb') as f:
