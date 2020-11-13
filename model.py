@@ -67,8 +67,8 @@ class Net(pl.LightningModule):
         return loss
 
     def configure_optimizers(self):
-        lr = 0.0005
-        beta1 = 0.3
+        lr = 0.0001
+        beta1 = 0.1
         beta2 = 0.999
 
         d_optimizer = optim.Adam(self.discriminator.parameters(), lr, [beta1, beta2]) 
